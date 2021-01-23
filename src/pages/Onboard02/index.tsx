@@ -3,13 +3,14 @@ import { useNavigation } from '@react-navigation/native';
 
 import CarIcon from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/Feather';
+import { Title } from '../../components/Title';
+import { Subtitle } from '../../components/Subtitle';
+
 import {
   Container,
   Header,
   PageNumber,
   TitleBox,
-  Title,
-  SubTitle,
   Navigator,
   Dot,
   DotBlack,
@@ -36,9 +37,9 @@ const Onboard02: React.FC = () => {
       </Header>
       <TitleBox>
         <Title>Depois, escolha o carro</Title>
-        <SubTitle>
+        <Subtitle>
           Vários modelos para você dirigir seguro, com conforto e segurança
-        </SubTitle>
+        </Subtitle>
       </TitleBox>
       <Navigator>
         <DotsBox onPress={handleBackScreen}>

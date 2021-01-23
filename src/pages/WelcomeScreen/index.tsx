@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import { StatusBar } from 'react-native';
 
@@ -23,6 +23,19 @@ import {
 
 const WelcomeScreen: React.FC = () => {
   const navigation = useNavigation();
+
+  const handleRegisterScreen = useCallback(() => {
+    navigation.navigate('Register');
+  }, [navigation]);
+
+  const handleLoginScreen = useCallback(() => {
+    navigation.navigate('Login');
+  }, [navigation]);
+
+  const handleBackScreen = useCallback(() => {
+    navigation.navigate('Onboard02');
+  }, [navigation]);
+
   return (
     <Container>
       <StatusBar barStyle="light-content" backgroundColor="#1b1b1f" />
@@ -37,14 +50,14 @@ const WelcomeScreen: React.FC = () => {
         <SubTitle>O que você deseja fazer?</SubTitle>
       </TitleBox>
       <ButtonsBox>
-        <LoginButton>
+        <LoginButton onPress={handleLoginScreen}>
           <ButtonText>Login</ButtonText>
         </LoginButton>
-        <RegisterButton>
+        <RegisterButton onPress={handleRegisterScreen}>
           <ButtonText>Cadastro</ButtonText>
         </RegisterButton>
       </ButtonsBox>
-      <BackButton onPress={() => navigation.goBack()}>
+      <BackButton onPress={handleBackScreen}>
         <BackButtonText>Voltar</BackButtonText>
       </BackButton>
     </Container>

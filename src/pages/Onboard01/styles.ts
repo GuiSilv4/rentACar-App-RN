@@ -27,21 +27,6 @@ export const TitleBox = styled.View`
   width: 65%;
 `;
 
-export const Title = styled.Text`
-  color: #47474d;
-  font-family: 'Archivo-Bold';
-  font-size: 40px;
-  line-height: 42px;
-`;
-
-export const SubTitle = styled.Text`
-  font-family: 'Inter-Regular';
-  font-size: 15px;
-  line-height: 25px;
-  color: #7a7a80;
-  margin-top: 10%;
-`;
-
 export const Navigator = styled.View`
   flex-direction: row;
   justify-content: space-between;

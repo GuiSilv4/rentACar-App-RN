@@ -2,14 +2,14 @@ import React, { useCallback } from 'react';
 
 import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
+import { Title } from '../../components/Title';
+import { Subtitle } from '../../components/Subtitle';
 
 import {
   Container,
   Header,
   PageNumber,
   TitleBox,
-  Title,
-  SubTitle,
   Navigator,
   NextScreenButton,
   Dot,
@@ -31,10 +31,10 @@ const Onboard01: React.FC = () => {
       </Header>
       <TitleBox>
         <Title>Primeiro, escolha a data</Title>
-        <SubTitle>
+        <Subtitle>
           Você é quem define um período, e nós mostraremos os carros
           disponíveis.
-        </SubTitle>
+        </Subtitle>
       </TitleBox>
       <Navigator>
         <DotsBox onPress={handleNextScreen}>
