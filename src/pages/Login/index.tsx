@@ -27,7 +27,7 @@ const Login: React.FC = () => {
   const [checkedRememberMe, setCheckedRememberMe] = useState(false);
 
   const handleSignIn = useCallback(() => {
-    navigation.navigate('DatePick');
+    navigation.navigate('Dashboard');
   }, [navigation]);
 
   const toggleRememberMe = useCallback(() => {

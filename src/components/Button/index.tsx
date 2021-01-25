@@ -5,10 +5,11 @@ import { Container, ButtonText } from './styles';
 
 interface ButtonProps extends RectButtonProperties {
   children: string;
+  opacity: number;
 }
 
-const Button: React.FC<ButtonProps> = ({ children, ...rest }) => (
-  <Container {...rest}>
+const Button: React.FC<ButtonProps> = ({ opacity, children, ...rest }) => (
+  <Container {...rest} style={{ opacity }}>
     <ButtonText>{children}</ButtonText>
   </Container>
 );

@@ -3,9 +3,14 @@ import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { addDays, format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 
-import { StatusBar, Platform } from 'react-native';
+import { StatusBar, Platform, Animated, Dimensions } from 'react-native';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
+
 import Button from '../../components/Button';
+import BigCarCard from '../../components/BigCarCard';
+import { useAuth } from '../../hooks/auth';
+
+import Lambo from '../../assets/Lambo.png';
 
 import {
   Container,
@@ -20,6 +25,14 @@ import {
   ToContainer,
   ArrowContainer,
   ArrowLine,
+  CalendarContainer,
+  CarsContainer,
+  CarsContainerScrollView,
+  CarListHeader,
+  CarListTitle,
+  CarsListResults,
+  FilterIcon,
+  CarListRight,
 } from './styles';
 
 LocaleConfig.locales.br = {
@@ -65,9 +78,66 @@ LocaleConfig.locales.br = {
 
 LocaleConfig.defaultLocale = 'br';
 
+const { height } = Dimensions.get('window');
+
 const DatePick: React.FC = () => {
+  const [titleOpened, setTitleOpened] = useState(true);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
+  const [confirmButtonOpacity, setConfirmButtonOpacity] = useState(0.5);
+
+  const { toggleShowTabBar, showTabBar } = useAuth();
+
+  const [topContainerY] = useState(new Animated.Value(0));
+  const [calendarOpacity] = useState(new Animated.Value(1));
+  const [carContainerOpacity] = useState(new Animated.Value(0));
+
+  useEffect(
+    () =>
+      startDate && endDate
+        ? setConfirmButtonOpacity(1)
+        : setConfirmButtonOpacity(0.5),
+    [startDate, endDate],
+  );
+
+  const playAnimations = useCallback(() => {
+    const topBarHeight =
+      Platform.OS === 'ios' ? (height * 30) / 100 : (height * 20) / 100;
+
+    Animated.parallel([
+      Animated.timing(topContainerY, {
+        toValue: titleOpened ? -topBarHeight : 0,
+        duration: 500,
+        useNativeDriver: true,
+      }),
+      Animated.timing(calendarOpacity, {
+        toValue: titleOpened ? 0 : 1,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+      Animated.timing(carContainerOpacity, {
+        toValue: titleOpened ? 1 : 0,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, [topContainerY, calendarOpacity, titleOpened, carContainerOpacity]);
+
+  const handleOpenCalendar = useCallback(() => {
+    if (!titleOpened) {
+      playAnimations();
+      setTitleOpened(true);
+      toggleShowTabBar();
+    }
+  }, [titleOpened, toggleShowTabBar, playAnimations]);
+
+  const handleConfirmDates = useCallback(() => {
+    if (startDate && endDate) {
+      playAnimations();
+      setTitleOpened(false);
+      toggleShowTabBar();
+    }
+  }, [startDate, endDate, playAnimations, setTitleOpened, toggleShowTabBar]);
 
   const formatedStartDate = useMemo(() => {
     if (startDate) {
@@ -164,13 +234,16 @@ const DatePick: React.FC = () => {
   return (
     <Container>
       <StatusBar barStyle="light-content" backgroundColor="#1b1b1f" />
-      <TopPageContainer>
+      <TopPageContainer style={{ transform: [{ translateY: topContainerY }] }}>
         <Title>
           Escolha a {`\n`}
           data e encontre um carro.
         </Title>
       </TopPageContainer>
-      <FromToContainer>
+      <FromToContainer
+        show={titleOpened}
+        style={{ transform: [{ translateY: topContainerY }] }}
+      >
         <FromContainer>
           <FromToLabel>DE</FromToLabel>
           <FromToInput
@@ -179,9 +252,15 @@ const DatePick: React.FC = () => {
             editable={false}
           />
         </FromContainer>
-        <ArrowContainer>
-          <ArrowLine />
-          <ArrowIcon name="chevron-right" color="#7A7A80" size={22} />
+        <ArrowContainer onPress={handleOpenCalendar}>
+          {titleOpened && <ArrowLine />}
+
+          <ArrowIcon
+            name="chevron-right"
+            color="#7A7A80"
+            size={22}
+            rotate={!titleOpened}
+          />
         </ArrowContainer>
         <ToContainer>
           <FromToLabel>ATÉ</FromToLabel>
@@ -192,26 +271,84 @@ const DatePick: React.FC = () => {
           />
         </ToContainer>
       </FromToContainer>
-      <Calendar
+      <CarsContainer
         style={{
-          paddingVertical: Platform.OS === 'ios' ? 30 : 5,
+          opacity: carContainerOpacity,
+          zIndex: titleOpened ? -20 : 10,
         }}
-        minDate={Date()}
-        markingType="period"
-        markedDates={markedDates}
-        onDayPress={pickDate}
-        renderArrow={direction => (
-          <ArrowIcon name={`chevron-${direction}`} size={20} color="#7A7A80" />
-        )}
-        theme={{
-          textMonthFontFamily: 'Archivo-Medium',
-          textMonthFontSize: 20,
-          textDayFontFamily: 'Archivo-Medium',
+      >
+        <CarsContainerScrollView>
+          <CarListHeader>
+            <CarListTitle>Resultados</CarListTitle>
+            <CarListRight>
+              <CarsListResults>5 carros</CarsListResults>
+              <FilterIcon name="ios-options-outline" />
+            </CarListRight>
+          </CarListHeader>
+          <BigCarCard
+            brand="LAMBORGHINI"
+            model="Huracan"
+            price={580}
+            fuelType="eletric"
+            images={Lambo}
+          />
+          <BigCarCard
+            brand="LAMBORGHINI"
+            model="Huracan"
+            price={580}
+            fuelType="eletric"
+            images={Lambo}
+          />
+          <BigCarCard
+            brand="LAMBORGHINI"
+            model="Huracan"
+            price={580}
+            fuelType="eletric"
+            images={Lambo}
+          />
+          <BigCarCard
+            brand="LAMBORGHINI"
+            model="Huracan"
+            price={580}
+            fuelType="eletric"
+            images={Lambo}
+          />
+        </CarsContainerScrollView>
+      </CarsContainer>
+      <CalendarContainer
+        style={{
+          opacity: calendarOpacity,
+          zIndex: titleOpened ? 20 : -20,
         }}
-      />
-      <BottonPageContainer>
-        <Button>Confirmar</Button>
-      </BottonPageContainer>
+      >
+        <Calendar
+          style={{
+            paddingVertical: Platform.OS === 'ios' ? '10%' : '5%',
+          }}
+          minDate={Date()}
+          markingType="period"
+          markedDates={markedDates}
+          onDayPress={pickDate}
+          renderArrow={direction => (
+            <ArrowIcon
+              name={`chevron-${direction}`}
+              size={20}
+              color="#7A7A80"
+              rotate={false}
+            />
+          )}
+          theme={{
+            textMonthFontFamily: 'Archivo-Medium',
+            textMonthFontSize: 20,
+            textDayFontFamily: 'Archivo-Medium',
+          }}
+        />
+        <BottonPageContainer>
+          <Button onPress={handleConfirmDates} opacity={confirmButtonOpacity}>
+            Confirmar
+          </Button>
+        </BottonPageContainer>
+      </CalendarContainer>
     </Container>
   );
 };
