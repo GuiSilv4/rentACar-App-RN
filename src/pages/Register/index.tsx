@@ -7,7 +7,7 @@ import { KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Container, TitleBox, BottomContainer, Label } from './styles';
 import Button from '../../components/Button';
-import { Title } from '../../components/Title';
+import Title from '../../components/Title';
 import { Subtitle } from '../../components/Subtitle';
 import TopNavigator from '../../components/TopNavigator';
 import Input from '../../components/Input';
@@ -15,6 +15,7 @@ import Input from '../../components/Input';
 const Register: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const navigation = useNavigation();
+  const [showPassword, setShowPassword] = useState(false);
   const [showFieldsStepTwo, setShowFieldsStepTwo] = useState(false);
 
   const handleRegister = useCallback(() => {
@@ -71,12 +72,20 @@ const Register: React.FC = () => {
                   icon="lock"
                   placeholder="Senha"
                   secureTextEntry
+                  showPassword={(item: boolean) => {
+                    setShowPassword(item);
+                  }}
+                  passwordVisible={showPassword}
                 />
                 <Input
                   name="confirm-password"
                   icon="lock"
                   placeholder="Repetir senha"
                   secureTextEntry
+                  showPassword={(item: boolean) => {
+                    setShowPassword(item);
+                  }}
+                  passwordVisible={showPassword}
                 />
               </>
             )}

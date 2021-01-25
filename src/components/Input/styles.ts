@@ -48,3 +48,8 @@ export const Line = styled.View`
   background-color: #fff;
   height: 56px;
 `;
+
+export const EyeButton = styled.TouchableOpacity`
+  margin-left: 10px;
+  margin-right: -10px;
+`;

@@ -7,6 +7,7 @@ import WelcomeScreen from '../pages/WelcomeScreen';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import RegisterConfirmation from '../pages/RegisterConfirmation';
+import DatePick from '../pages/DatePick';
 
 const Onboard = createStackNavigator();
 
@@ -17,12 +18,13 @@ const OnboardRoutes: React.FC = () => (
       cardStyle: { backgroundColor: '#312e38' },
     }}
   >
+    <Onboard.Screen name="DatePick" component={DatePick} />
+    <Onboard.Screen name="Login" component={Login} />
     <Onboard.Screen
       name="RegisterConfirmation"
       component={RegisterConfirmation}
     />
     <Onboard.Screen name="Register" component={Register} />
-    <Onboard.Screen name="Login" component={Login} />
     <Onboard.Screen name="Onboard01" component={Onboard01} />
     <Onboard.Screen name="Onboard02" component={Onboard02} />
     <Onboard.Screen name="WelcomeScreen" component={WelcomeScreen} />

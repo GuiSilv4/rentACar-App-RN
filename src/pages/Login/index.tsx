@@ -15,7 +15,7 @@ import {
   BottomContainer,
 } from './styles';
 import Button from '../../components/Button';
-import { Title } from '../../components/Title';
+import Title from '../../components/Title';
 import { Subtitle } from '../../components/Subtitle';
 import TopNavigator from '../../components/TopNavigator';
 import Input from '../../components/Input';
@@ -23,11 +23,12 @@ import Input from '../../components/Input';
 const Login: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const navigation = useNavigation();
+  const [showPassword, setShowPassword] = useState(false);
   const [checkedRememberMe, setCheckedRememberMe] = useState(false);
 
   const handleSignIn = useCallback(() => {
-    // TODO
-  }, []);
+    navigation.navigate('DatePick');
+  }, [navigation]);
 
   const toggleRememberMe = useCallback(() => {
     setCheckedRememberMe(!checkedRememberMe);
@@ -57,18 +58,27 @@ const Login: React.FC = () => {
           </TitleBox>
           <Form ref={formRef} onSubmit={handleSignIn} style={{ width: '100%' }}>
             <Input name="email" icon="mail" placeholder="E-mail" />
-            <Input name="password" icon="lock" placeholder="Senha" />
+            <Input
+              name="password"
+              icon="lock"
+              placeholder="Senha"
+              secureTextEntry
+              showPassword={(item: boolean) => {
+                setShowPassword(item);
+              }}
+              passwordVisible={showPassword}
+            />
             <BottomContainer>
               <RememberMeContainer>
                 <RememberMeBox
                   onPress={toggleRememberMe}
                   checked={checkedRememberMe}
                 />
-                <RememberMeText>Lembra-me</RememberMeText>
+                <RememberMeText>Lembrar-me</RememberMeText>
               </RememberMeContainer>
               <ForgotPassword>Esqueci minha senha</ForgotPassword>
             </BottomContainer>
-            <Button>Login</Button>
+            <Button onPress={handleSignIn}>Login</Button>
           </Form>
         </Container>
       </ScrollView>

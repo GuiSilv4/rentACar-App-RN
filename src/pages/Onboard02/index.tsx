@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import CarIcon from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/Feather';
-import { Title } from '../../components/Title';
+import Title from '../../components/Title';
 import { Subtitle } from '../../components/Subtitle';
 
 import {
@@ -22,7 +22,7 @@ const Onboard02: React.FC = () => {
   const navigation = useNavigation();
 
   const handleBackScreen = useCallback(() => {
-    navigation.goBack();
+    navigation.navigate('Onboard01');
   }, [navigation]);
 
   const handleNextScreen = useCallback(() => {

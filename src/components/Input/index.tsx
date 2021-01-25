@@ -9,12 +9,15 @@ import React, {
 import { TextInputProps } from 'react-native';
 import { useField } from '@unform/core';
 
-import { Container, TextInput, Icon, Line } from './styles';
+import { Container, TextInput, Icon, Line, EyeButton } from './styles';
 
 interface InputProps extends TextInputProps {
   name: string;
   icon: string;
   containerStyle?: object;
+  showPassword?: any;
+  passwordVisible?: boolean;
+  secureTextEntry?: boolean;
 }
 
 interface InputValueReference {
@@ -26,7 +29,15 @@ interface InputRef {
 }
 
 const Input: React.RefForwardingComponent<InputRef, InputProps> = (
-  { name, icon, containerStyle = {}, ...rest },
+  {
+    name,
+    icon,
+    containerStyle = {},
+    showPassword,
+    passwordVisible,
+    secureTextEntry,
+    ...rest
+  },
   ref,
 ) => {
   const inputElementRef = useRef<any>(null);
@@ -46,6 +57,23 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
 
     setIsFilled(!!inputValueRef.current.value);
   }, []);
+
+  const EyeIcon = useCallback(
+    () => (
+      <EyeButton
+        onPress={() => {
+          passwordVisible ? showPassword(false) : showPassword(true);
+        }}
+      >
+        <Icon
+          name={passwordVisible ? 'eye' : 'eye-off'}
+          size={22}
+          color="#AEAEB3"
+        />
+      </EyeButton>
+    ),
+    [passwordVisible, showPassword],
+  );
 
   useEffect(() => {
     inputValueRef.current.value = defaultValue;
@@ -82,6 +110,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
       />
       <Line />
       <TextInput
+        secureTextEntry={secureTextEntry ? !passwordVisible : false}
         ref={inputElementRef}
         keyboardAppearance="dark"
         placeholderTextColor="#AEAEB3"
@@ -93,6 +122,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
         }}
         {...rest}
       />
+      {secureTextEntry && <EyeIcon />}
     </Container>
   );
 };

@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 
 import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
-import { Title } from '../../components/Title';
+import Title from '../../components/Title';
 import { Subtitle } from '../../components/Subtitle';
 
 import {
