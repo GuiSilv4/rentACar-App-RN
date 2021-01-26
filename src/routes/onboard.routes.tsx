@@ -18,8 +18,8 @@ const OnboardRoutes: React.FC = () => (
       cardStyle: { backgroundColor: '#312e38' },
     }}
   >
-    <Onboard.Screen name="Onboard01" component={Onboard01} />
     <Onboard.Screen name="Dashboard" component={DashboardRoutes} />
+    <Onboard.Screen name="Onboard01" component={Onboard01} />
     <Onboard.Screen name="Login" component={Login} />
     <Onboard.Screen
       name="RegisterConfirmation"

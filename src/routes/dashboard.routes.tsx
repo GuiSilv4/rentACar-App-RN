@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Dimensions, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import DatePick from '../pages/DatePick';
+import Listing from '../pages/Listing';
 import { useAuth } from '../hooks/auth';
 
 const { width, height } = Dimensions.get('window');
@@ -52,7 +53,7 @@ const DashboardRoutes: React.FC = () => {
       />
       <TabStack.Screen
         name="CarList"
-        component={DatePick}
+        component={Listing}
         options={screenOptions('car-outline', true)}
       />
       <TabStack.Screen
