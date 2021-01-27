@@ -3,21 +3,38 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { Dimensions, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useAuth } from '../hooks/auth';
+
 import DatePick from '../pages/DatePick';
 import Listing from '../pages/Listing';
-import { useAuth } from '../hooks/auth';
+import Appointments from '../pages/Appointments';
+import Profile from '../pages/Profile';
 
 const { width, height } = Dimensions.get('window');
 
 const TabStack = createBottomTabNavigator();
-const activeBackgroundColor = '#ffffff';
-const inactiveBackgroundCOlor = '#0f3f3c';
+const activeTintColor = '#DC1637';
+const inactiveTintColor = '#AEAEB3';
 
-const screenOptions = (iconName, showTabBar) => {
+interface screenOptionsProps {
+  iconName: string;
+  showTabBar: boolean;
+}
+
+interface screenOptionsReturnType {
+  tabBarLabel: string;
+  tabBarVisible: boolean;
+  tabBarIcon: ({ color }: any) => JSX.Element;
+}
+
+const screenOptions = ({
+  iconName,
+  showTabBar,
+}: screenOptionsProps): screenOptionsReturnType => {
   return {
     tabBarLabel: '',
     tabBarVisible: showTabBar,
-    tabBarIcon: ({ color, focused }) => (
+    tabBarIcon: ({ color }: any) => (
       <Icon name={iconName} size={(height / width) * 12} color={color} />
     ),
   };
@@ -29,8 +46,8 @@ const DashboardRoutes: React.FC = () => {
   return (
     <TabStack.Navigator
       tabBarOptions={{
-        activeTintColor: '#DC1637',
-        inactiveTintColor: '#AEAEB3',
+        activeTintColor,
+        inactiveTintColor,
         style: {
           borderTopColor: '#EBEBF0',
           borderTopWidth: showTabBar ? 2 : 0,
@@ -49,22 +66,34 @@ const DashboardRoutes: React.FC = () => {
       <TabStack.Screen
         name="Home"
         component={DatePick}
-        options={screenOptions('home-outline', showTabBar)}
+        options={screenOptions({
+          iconName: 'home-outline',
+          showTabBar,
+        })}
       />
       <TabStack.Screen
         name="CarList"
         component={Listing}
-        options={screenOptions('car-outline', true)}
+        options={screenOptions({
+          iconName: 'car-outline',
+          showTabBar: true,
+        })}
       />
       <TabStack.Screen
         name="Appointments"
-        component={DatePick}
-        options={screenOptions('calendar-outline', true)}
+        component={Appointments}
+        options={screenOptions({
+          iconName: 'calendar-outline',
+          showTabBar: true,
+        })}
       />
       <TabStack.Screen
         name="Profile"
-        component={DatePick}
-        options={screenOptions('person-outline', true)}
+        component={Profile}
+        options={screenOptions({
+          iconName: 'person-outline',
+          showTabBar: true,
+        })}
       />
     </TabStack.Navigator>
   );

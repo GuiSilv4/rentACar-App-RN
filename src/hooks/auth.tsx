@@ -65,12 +65,20 @@ const AuthProvider: React.FC = ({ children }) => {
   }, []);
 
   const signIn = useCallback(async ({ email, password }) => {
-    const response = await api.post('sessions', {
-      email,
-      password,
-    });
+    // const response = await api.post('sessions', {
+    //   email,
+    //   password,
+    // });
 
-    const { token, user } = response.data;
+    // const { token, user } = response.data;
+
+    const token = 'qeqwejqwjeqw';
+    const user = {
+      id: '1',
+      email: 'teste@gmail.com',
+      name: 'Guilherme Alano',
+      avatar_url: 'string',
+    };
 
     await AsyncStorage.multiSet([
       ['@RentACarApp:token', token],
@@ -78,7 +86,7 @@ const AuthProvider: React.FC = ({ children }) => {
     ]);
 
     api.defaults.headers.authorization = `Bearer ${token[1]}`;
-
+    setShowTabBar(false);
     setData({ token, user });
   }, []);
 

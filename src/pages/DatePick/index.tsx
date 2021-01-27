@@ -33,6 +33,7 @@ import {
   CarsListResults,
   FilterIcon,
   CarListRight,
+  FilterIconButton,
 } from './styles';
 
 LocaleConfig.locales.br = {
@@ -231,6 +232,9 @@ const DatePick: React.FC = () => {
     [startDate, endDate],
   );
 
+  const handleFilter = useCallback(() => {
+    // todo
+  }, []);
   return (
     <Container>
       <StatusBar barStyle="light-content" backgroundColor="#1b1b1f" />
@@ -282,7 +286,9 @@ const DatePick: React.FC = () => {
             <CarListTitle>Resultados</CarListTitle>
             <CarListRight>
               <CarsListResults>5 carros</CarsListResults>
-              <FilterIcon name="ios-options-outline" />
+              <FilterIconButton onPress={handleFilter}>
+                <FilterIcon name="ios-options-outline" />
+              </FilterIconButton>
             </CarListRight>
           </CarListHeader>
           <BigCarCard

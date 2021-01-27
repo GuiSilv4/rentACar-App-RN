@@ -5,6 +5,7 @@ import { FormHandles } from '@unform/core';
 
 import { KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '../../hooks/auth';
 import {
   Container,
   TitleBox,
@@ -23,12 +24,16 @@ import Input from '../../components/Input';
 const Login: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const navigation = useNavigation();
+  const { signIn } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [checkedRememberMe, setCheckedRememberMe] = useState(false);
 
-  const handleSignIn = useCallback(() => {
-    navigation.navigate('Dashboard');
-  }, [navigation]);
+  const handleSignIn = useCallback(async () => {
+    await signIn({
+      email: 'teste@gmail.com',
+      password: '12345',
+    });
+  }, [signIn]);
 
   const toggleRememberMe = useCallback(() => {
     setCheckedRememberMe(!checkedRememberMe);

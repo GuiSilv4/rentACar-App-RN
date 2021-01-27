@@ -6,6 +6,7 @@ import {
   getStatusBarHeight,
   getBottomSpace,
 } from 'react-native-iphone-x-helper';
+import { RectButton } from 'react-native-gesture-handler';
 
 const { height, width } = Dimensions.get('window');
 
@@ -188,3 +189,5 @@ export const CarsListResults = styled.Text`
 export const FilterIcon = styled(IoniconsIcon)`
   font-size: 26px;
 `;
+
+export const FilterIconButton = styled(RectButton)``;

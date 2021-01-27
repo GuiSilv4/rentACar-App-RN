@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import SmallCarCard from '../../components/SmallCarCard';
 import AudiImage from '../../assets/Audi.png';
@@ -11,44 +11,26 @@ import {
   Header,
   Title,
   CarSearchResult,
-  SearchBar,
   Body,
-  SearchButton,
-  SearchButtonIcon,
-  SearchBarContainer,
   CarsListView,
 } from './styles';
 
-const Listing: React.FC = () => {
-  const carQuantityResult = 12;
-
+const Appointments: React.FC = () => {
   return (
     <Container>
       <Header>
-        <Title>Listagem</Title>
-        <CarSearchResult>{carQuantityResult} carros</CarSearchResult>
+        <Title>Agendamentos</Title>
+        <CarSearchResult>5 períodos</CarSearchResult>
       </Header>
       <Body>
-        <SearchBarContainer>
-          <SearchBar placeholder="Qual carro você procura?" />
-          <SearchButton>
-            <SearchButtonIcon name="search" color="#47474D" />
-          </SearchButton>
-        </SearchBarContainer>
         <CarsListView showsVerticalScrollIndicator={false}>
-          <SmallCarCard
-            brand="Audi"
-            model="RS 5 Coupé"
-            price={120}
-            fuelType="eletric"
-            image={AudiImage}
-          />
           <SmallCarCard
             brand="Porsche"
             model="Panamera"
             price={340}
             fuelType="gasoline"
             image={PorsheImage}
+            period={[new Date(2021, 0, 25), new Date(2021, 0, 28)]}
           />
           <SmallCarCard
             brand="Chevrolet"
@@ -56,6 +38,15 @@ const Listing: React.FC = () => {
             price={620}
             fuelType="gasoline"
             image={CorveteImage}
+            period={[new Date(2021, 0, 28), new Date(2021, 1, 5)]}
+          />
+          <SmallCarCard
+            brand="Audi"
+            model="RS 5 Coupé"
+            price={120}
+            fuelType="eletric"
+            image={AudiImage}
+            period={[new Date(2021, 1, 5), new Date(2021, 1, 15)]}
           />
           <SmallCarCard
             brand="Lamborghini"
@@ -63,6 +54,7 @@ const Listing: React.FC = () => {
             price={120}
             fuelType="eletric"
             image={LamboImage}
+            period={[new Date(2021, 1, 15), new Date(2021, 1, 19)]}
           />
         </CarsListView>
       </Body>
@@ -70,4 +62,4 @@ const Listing: React.FC = () => {
   );
 };
 
-export default Listing;
+export default Appointments;

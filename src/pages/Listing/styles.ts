@@ -1,6 +1,8 @@
 import styled from 'styled-components/native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import { RectButton } from 'react-native-gesture-handler';
+import { Platform } from 'react-native';
+import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 
 export const Container = styled.View`
   flex: 1;
@@ -10,12 +12,13 @@ export const Container = styled.View`
 export const Header = styled.View`
   flex-direction: row;
   background-color: #1b1b1f;
-  height: 142px;
   width: 100%;
   align-items: center;
   justify-content: space-between;
   padding: 0 27px;
-  padding-top: 10px;
+  height: ${Platform.OS === 'ios' ? 142 : 110}px;
+  padding-top: ${Platform.OS === 'ios' ? getStatusBarHeight() - 25 : 0}px;
+  padding-bottom: ${Platform.OS === 'ios' ? 0 : 30}px;
 `;
 
 export const Title = styled.Text`
@@ -48,12 +51,15 @@ export const SearchBar = styled.TextInput`
   margin-top: -28px;
   height: 56px;
   background-color: #f4f5f6;
-  margin-bottom: 20px;
   flex: 1;
 `;
 
 export const SearchButtonIcon = styled(FeatherIcon)`
   font-size: 24px;
+`;
+
+export const CarsListView = styled.ScrollView`
+  flex: 1;
 `;
 
 export const SearchButton = styled.TouchableOpacity`
