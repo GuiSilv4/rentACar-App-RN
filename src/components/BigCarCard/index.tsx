@@ -63,7 +63,7 @@ const BigCarCard: React.FC<bigCarCardProps> = ({
         </PriceContainer>
       </Top>
       <Mid onPress={onPress}>
-        <CarImage source={images} />
+        <CarImage source={{ uri: images }} />
       </Mid>
       <Bottom>
         <FuelIcon name={fuelIcon} color="#AEAEB3" />

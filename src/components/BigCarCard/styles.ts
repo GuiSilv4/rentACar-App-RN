@@ -78,6 +78,8 @@ export const Bottom = styled.View`
 
 export const CarImage = styled.Image`
   border-width: ${border}px;
+  width: 252px;
+  height: 119px;
 `;
 
 export const FuelIcon = styled(Icon)`

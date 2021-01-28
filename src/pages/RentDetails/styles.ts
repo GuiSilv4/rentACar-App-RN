@@ -21,6 +21,8 @@ export const Container = styled.View`
 export const CarImage = styled.Image`
   margin-top: 50px;
   margin-bottom: 20px;
+  height: 132px;
+  width: 280px;
 `;
 
 export const Top = styled.View`

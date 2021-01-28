@@ -1,10 +1,11 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useRoute } from '@react-navigation/native';
 
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 
 import { useNavigation } from '@react-navigation/native';
+import { differenceInCalendarDays } from 'date-fns';
 
 import {
   Container,
@@ -36,16 +37,26 @@ import {
   PerDayPriceContainer,
 } from './styles';
 
-import LamboImage from '../../assets/Lambo.png';
 import Button from '../../components/Button';
 import TopNavigator from '../../components/TopNavigator';
+import formatValue from '../../utils/formatValue';
 
 interface rentDetailProps {
-  model: string;
-  brand: string;
-  images: any;
-  fuelType: string;
-  price: number;
+  car: {
+    model: string;
+    brand: string;
+    // eslint-disable-next-line camelcase
+    image_url: string;
+    fuelType: string;
+    rentPrice: number;
+    maxSpeed: 280;
+    aceleration: 3.2;
+    horsePower: 800;
+    transmission: 'auto';
+    seats: 2;
+  };
+  startDate: Date;
+  endDate: Date;
 }
 
 interface rentSpecProps {
@@ -59,14 +70,8 @@ const RentDetails: React.FC = () => {
 
   const navigation = useNavigation();
 
-  const startDate = new Date(2021, 1, 1);
-  const endDate = new Date(2021, 1, 3);
-
-  const { brand, model, price } = {
-    brand: 'Lamborghini',
-    model: 'Huracan',
-    price: 580,
-  };
+  const [startDate, setStartDate] = useState<Date>();
+  const [endDate, setEndDate] = useState<Date>();
 
   const RentSpec: React.FC<rentSpecProps> = ({ icon, text }) => {
     return (
@@ -82,22 +87,28 @@ const RentDetails: React.FC = () => {
   };
 
   const formatedStartDate = useMemo(() => {
-    if (startDate) {
-      return format(startDate, 'dd MMM yyyy', {
+    if (params.startDate) {
+      return format(params.startDate, 'dd MMM yyyy', {
         locale: ptBR,
       });
     }
     return '';
-  }, [startDate]);
+  }, [params.startDate]);
 
   const formatedEndDate = useMemo(() => {
-    if (endDate) {
-      return format(endDate, 'dd MMM yyyy', {
+    if (params.endDate) {
+      return format(params.endDate, 'dd MMM yyyy', {
         locale: ptBR,
       });
     }
     return '';
-  }, [endDate]);
+  }, [params.endDate]);
+
+  const [totalDays, totalPrice] = useMemo(() => {
+    const days = differenceInCalendarDays(params.endDate, params.startDate);
+    const price = formatValue(days * params.car.rentPrice);
+    return [days, price];
+  }, [params.startDate, params.endDate, params.car.rentPrice]);
 
   const handleBackScreen = useCallback(() => {
     navigation.goBack();
@@ -118,26 +129,32 @@ const RentDetails: React.FC = () => {
     <>
       <Container>
         <TopNavigator onPress={handleBackScreen} />
-        <CarImage source={LamboImage} />
+        <CarImage source={{ uri: params.car.image_url }} />
         <Top>
           <BrandModelContainer>
-            <Brand>{brand}</Brand>
-            <Model>{model}</Model>
+            <Brand>{params.car.brand}</Brand>
+            <Model>{params.car.model}</Model>
           </BrandModelContainer>
           <PriceContainer>
             <DayLabel>AO DIA</DayLabel>
-            <Price>R$ {price}</Price>
+            <Price>R$ {params.car.rentPrice}</Price>
           </PriceContainer>
         </Top>
         <SpecsContainer>
-          <RentSpec icon="speedometer-outline" text="380km/h" />
-          <RentSpec icon="timer-outline" text="3.2s" />
+          <RentSpec
+            icon="speedometer-outline"
+            text={params.car.maxSpeed.toString()}
+          />
+          <RentSpec
+            icon="timer-outline"
+            text={params.car.aceleration.toString()}
+          />
           <RentSpec icon="engine-outline" text="800hp" />
         </SpecsContainer>
         <SpecsContainer>
-          <RentSpec icon="water-outline" text="Gasolina" />
-          <RentSpec icon="car-shift-pattern" text="auto" />
-          <RentSpec icon="people-outline" text="2 pessoas" />
+          <RentSpec icon="water-outline" text={params.car.fuelType} />
+          <RentSpec icon="car-shift-pattern" text={params.car.transmission} />
+          <RentSpec icon="people-outline" text={params.car.seats.toString()} />
         </SpecsContainer>
       </Container>
       <FromToContainer>
@@ -158,9 +175,11 @@ const RentDetails: React.FC = () => {
         <FinalPriceContainer>
           <PerDayPriceContainer>
             <FromToLabel>TOTAL</FromToLabel>
-            <PerDayPrice>R$ 580 x 3 diárias</PerDayPrice>
+            <PerDayPrice>
+              R$ {params.car.rentPrice} x {totalDays} diárias
+            </PerDayPrice>
           </PerDayPriceContainer>
-          <TotalPrice>R$ 2,900</TotalPrice>
+          <TotalPrice>{totalPrice}</TotalPrice>
         </FinalPriceContainer>
         <Button onPress={handleRentCar}>Alugar agora</Button>
       </BottomContainer>

@@ -1,0 +1,82 @@
+{
+  "cars": [
+    {
+      "id": 1,
+      "brand": "Lamborghini",
+      "model": "Huracan",
+      "rentPrice": 580,
+      "image_url": "https://i.ibb.co/FkrqMrz/Lambo.png",
+      "fuelType": "eletric",
+      "maxSpeed": 280,
+      "aceleration": 3.2,
+      "horsePower": 800,
+      "transmission": "auto",
+      "seats": 2
+    },
+    {
+      "id": 2,
+      "brand": "Volvo",
+      "model": "XC40",
+      "rentPrice": 260,
+      "image_url": "https://i.ibb.co/SnyMDsD/Volvo.png",
+      "fuelType": "gasoline",
+      "maxSpeed": 190,
+      "aceleration": 4.5,
+      "horsePower": 600,
+      "transmission": "auto",
+      "seats": 7
+    },
+    {
+      "id": 3,
+      "brand": "Audi",
+      "model": "RS 5 Coupé",
+      "rentPrice": 120,
+      "image_url": "https://i.ibb.co/bPJQGC3/Audi.png",
+      "fuelType": "eletric",
+      "maxSpeed": 230,
+      "aceleration": 4.2,
+      "horsePower": 450,
+      "transmission": "manual",
+      "seats": 4
+    },
+    {
+      "id": 4,
+      "brand": "Porsche",
+      "model": "Panamera",
+      "rentPrice": 340,
+      "image_url": "https://i.ibb.co/fX52xkz/Porche.png",
+      "fuelType": "eletric",
+      "maxSpeed": 250,
+      "aceleration": 3.2,
+      "horsePower": 560,
+      "transmission": "auto",
+      "seats": 4
+    },
+    {
+      "id": 5,
+      "brand": "Chevrolet",
+      "model": "Covertte Z06",
+      "rentPrice": 620,
+      "image_url": "https://i.ibb.co/sgNy079/Corvete.png",
+      "fuelType": "gasoline",
+      "maxSpeed": 270,
+      "aceleration": 2.8,
+      "horsePower": 850,
+      "transmission": "auto",
+      "seats": 2
+    },
+    {
+      "id": 6,
+      "brand": "Mitsubishi",
+      "model": "Lancer Evo X",
+      "rentPrice": 290,
+      "image_url": "https://i.ibb.co/vhqbxz4/Lancer.png",
+      "fuelType": "gasoline",
+      "maxSpeed": 235,
+      "aceleration": 3.1,
+      "horsePower": 400,
+      "transmission": "auto",
+      "seats": 4
+    }
+  ]
+}

@@ -7,6 +7,7 @@ import { StatusBar, Platform, Animated, Dimensions } from 'react-native';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 
 import { useNavigation } from '@react-navigation/native';
+import { Image } from 'react-native';
 import Button from '../../components/Button';
 import BigCarCard from '../../components/BigCarCard';
 import { useAuth } from '../../hooks/auth';
@@ -36,6 +37,7 @@ import {
   CarListRight,
   FilterIconButton,
 } from './styles';
+import api from '../../services/api';
 
 LocaleConfig.locales.br = {
   monthNames: [
@@ -80,6 +82,24 @@ LocaleConfig.locales.br = {
 
 LocaleConfig.defaultLocale = 'br';
 
+interface periodParamsDTO {
+  color: string;
+  selected: boolean;
+  textColor: string;
+  startingDay?: boolean;
+  endingDay?: boolean;
+}
+
+interface Car {
+  id: number;
+  brand: string;
+  model: string;
+  rentPrice: number;
+  // eslint-disable-next-line camelcase
+  image_url: string;
+  fuelType: string;
+}
+
 const { height } = Dimensions.get('window');
 
 const DatePick: React.FC = () => {
@@ -89,6 +109,14 @@ const DatePick: React.FC = () => {
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [confirmButtonOpacity, setConfirmButtonOpacity] = useState(0.5);
+
+  const [cars, setCars] = useState<Car[]>([]);
+
+  useEffect(() => {
+    api.get('cars').then(response => {
+      setCars(response.data);
+    });
+  }, []);
 
   const { toggleShowTabBar, showTabBar } = useAuth();
 
@@ -173,7 +201,7 @@ const DatePick: React.FC = () => {
           color: '#FDEDEF',
           selected: true,
           textColor: startEndColor,
-        };
+        } as periodParamsDTO;
 
         if (i.getTime() === startDate.getTime()) {
           periodParams = {
@@ -235,9 +263,16 @@ const DatePick: React.FC = () => {
     [startDate, endDate],
   );
 
-  const handleOpenRentCarDetails = useCallback(() => {
-    navigation.navigate('RentDetails');
-  }, [navigation]);
+  const handleOpenRentCarDetails = useCallback(
+    car => {
+      navigation.navigate('RentDetails', {
+        car,
+        startDate,
+        endDate,
+      });
+    },
+    [navigation, startDate, endDate],
+  );
 
   const handleFilter = useCallback(() => {
     // Todo
@@ -290,43 +325,29 @@ const DatePick: React.FC = () => {
       >
         <CarsContainerScrollView showsVerticalScrollIndicator={false}>
           <CarListHeader>
-            <CarListTitle>Resultados</CarListTitle>
+            <CarListTitle>Resultado{cars.length > 1 && 's'}</CarListTitle>
             <CarListRight>
-              <CarsListResults>5 carros</CarsListResults>
+              <CarsListResults>
+                {cars.length} carro{cars.length > 1 && 's'}
+              </CarsListResults>
               <FilterIconButton onPress={handleFilter}>
                 <FilterIcon name="ios-options-outline" />
               </FilterIconButton>
             </CarListRight>
           </CarListHeader>
-          <BigCarCard
-            brand="LAMBORGHINI"
-            model="Huracan"
-            price={580}
-            fuelType="eletric"
-            images={Lambo}
-          />
-          <BigCarCard
-            brand="LAMBORGHINI"
-            model="Huracan"
-            price={580}
-            fuelType="gasolin"
-            images={Lambo}
-            onPress={handleOpenRentCarDetails}
-          />
-          <BigCarCard
-            brand="LAMBORGHINI"
-            model="Huracan"
-            price={580}
-            fuelType="eletric"
-            images={Lambo}
-          />
-          <BigCarCard
-            brand="LAMBORGHINI"
-            model="Huracan"
-            price={580}
-            fuelType="eletric"
-            images={Lambo}
-          />
+          {cars.map(car => (
+            <BigCarCard
+              key={car.id}
+              brand={car.brand}
+              model={car.model}
+              price={car.rentPrice}
+              fuelType={car.fuelType}
+              images={car.image_url}
+              onPress={() => {
+                handleOpenRentCarDetails(car);
+              }}
+            />
+          ))}
         </CarsContainerScrollView>
       </CarsContainer>
       <CalendarContainer
