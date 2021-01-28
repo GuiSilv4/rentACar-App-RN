@@ -6,6 +6,7 @@ import ptBR from 'date-fns/locale/pt-BR';
 import { StatusBar, Platform, Animated, Dimensions } from 'react-native';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 
+import { useNavigation } from '@react-navigation/native';
 import Button from '../../components/Button';
 import BigCarCard from '../../components/BigCarCard';
 import { useAuth } from '../../hooks/auth';
@@ -82,6 +83,8 @@ LocaleConfig.defaultLocale = 'br';
 const { height } = Dimensions.get('window');
 
 const DatePick: React.FC = () => {
+  const navigation = useNavigation();
+
   const [titleOpened, setTitleOpened] = useState(true);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
@@ -232,8 +235,12 @@ const DatePick: React.FC = () => {
     [startDate, endDate],
   );
 
+  const handleOpenRentCarDetails = useCallback(() => {
+    navigation.navigate('RentDetails');
+  }, [navigation]);
+
   const handleFilter = useCallback(() => {
-    // todo
+    // Todo
   }, []);
   return (
     <Container>
@@ -281,7 +288,7 @@ const DatePick: React.FC = () => {
           zIndex: titleOpened ? -20 : 10,
         }}
       >
-        <CarsContainerScrollView>
+        <CarsContainerScrollView showsVerticalScrollIndicator={false}>
           <CarListHeader>
             <CarListTitle>Resultados</CarListTitle>
             <CarListRight>
@@ -302,8 +309,9 @@ const DatePick: React.FC = () => {
             brand="LAMBORGHINI"
             model="Huracan"
             price={580}
-            fuelType="eletric"
+            fuelType="gasolin"
             images={Lambo}
+            onPress={handleOpenRentCarDetails}
           />
           <BigCarCard
             brand="LAMBORGHINI"

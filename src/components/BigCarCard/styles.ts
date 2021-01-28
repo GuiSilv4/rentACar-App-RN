@@ -1,3 +1,4 @@
+import { RectButton } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styled from 'styled-components/native';
 
@@ -41,7 +42,7 @@ export const Price = styled.Text`
   border-width: ${border}px;
 `;
 
-export const Mid = styled.View`
+export const Mid = styled(RectButton)`
   justify-content: center;
   align-items: center;
   border-width: ${border}px;

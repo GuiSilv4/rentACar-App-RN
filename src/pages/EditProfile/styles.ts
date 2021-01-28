@@ -1,9 +1,12 @@
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 import IconIonicons from 'react-native-vector-icons/Ionicons';
 import IconFeather from 'react-native-vector-icons/Feather';
 import { Platform } from 'react-native';
-import { RectButton } from 'react-native-gesture-handler';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
+
+interface EditDataButtonProps {
+  selected: boolean;
+}
 
 export const Container = styled.View`
   flex: 1;
@@ -42,6 +45,10 @@ export const BackButtonIcon = styled(IconFeather)`
 
 export const BackButton = styled.TouchableOpacity``;
 
+export const ImageContainer = styled.View`
+  align-items: center;
+`;
+
 export const ProfileImage = styled.Image`
   width: 180px;
   height: 180px;
@@ -51,5 +58,62 @@ export const ProfileImage = styled.Image`
 
 export const Body = styled.View`
   align-items: center;
+  flex: 1;
   padding: 0 25px;
+`;
+
+export const EditImageButton = styled.TouchableOpacity`
+  background-color: #dc1637;
+  width: 40px;
+  height: 40px;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+`;
+export const EditImageIcon = styled(IconIonicons)`
+  font-size: 25px;
+  color: #fff;
+  margin-left: 1px;
+`;
+
+export const EditDataButtonsContainer = styled.View`
+  flex-direction: row;
+  border-bottom-width: 1px;
+  border-bottom-color: #ebebf0;
+  padding-bottom: 15px;
+  width: 100%;
+  justify-content: space-between;
+  padding-top: 10%;
+  padding-left: 18%;
+  padding-right: 18%;
+  margin-bottom: 25px;
+`;
+
+export const EditDataButton = styled.TouchableOpacity<EditDataButtonProps>`
+  border-bottom-width: 0px;
+  padding-bottom: 15px;
+  border-bottom-color: #dc1637;
+  margin-bottom: -17px;
+  ${props =>
+    props.selected &&
+    css`
+      border-bottom-width: 2px;
+      border-bottom-color: #dc1637;
+    `}
+`;
+
+export const EditDataButtonText = styled.Text<EditDataButtonProps>`
+  font-family: 'Archivo-Regular';
+  font-weight: 400;
+  font-size: 20px;
+  color: #aeaeb3;
+  ${props =>
+    props.selected &&
+    css`
+      color: #3d3d4d;
+      font-family: 'Archivo-SemiBold';
+      font-weight: 600;
+    `}
 `;

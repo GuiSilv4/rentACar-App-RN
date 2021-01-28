@@ -27,15 +27,14 @@ import {
 
 const Profile: React.FC = () => {
   const navigation = useNavigation();
-  const { signOut } = useAuth();
 
   const profileName = 'Tiago Luchtenberg';
   const doneAppointmentsQuantity = '05';
   const timesUsed = '2';
 
   const handleLogout = useCallback(() => {
-    signOut();
-  }, [signOut]);
+    navigation.navigate('LeaveConfirmation');
+  }, [navigation]);
 
   const handleEditProfile = useCallback(() => {
     navigation.navigate('EditProfile');

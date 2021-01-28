@@ -21,7 +21,13 @@ const Register: React.FC = () => {
   const handleRegister = useCallback(() => {
     !showFieldsStepTwo
       ? setShowFieldsStepTwo(true)
-      : navigation.navigate('RegisterConfirmation');
+      : navigation.navigate('ConfirmationScreen', {
+          title: 'Conta criada!',
+          subtitle: 'Agora é só fazer login e aproveitar.',
+          okFunction: () => {
+            navigation.navigate('WelcomeScreen');
+          },
+        });
   }, [navigation, showFieldsStepTwo]);
 
   const handleBackScreen = useCallback(() => {

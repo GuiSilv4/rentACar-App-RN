@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import Dots from '../../assets/Fotos.png';
 
@@ -24,6 +24,7 @@ interface bigCarCardProps {
   images: any;
   fuelType: string;
   price: number;
+  onPress?(): void;
 }
 
 const BigCarCard: React.FC<bigCarCardProps> = ({
@@ -32,7 +33,23 @@ const BigCarCard: React.FC<bigCarCardProps> = ({
   images,
   fuelType,
   price,
+  onPress,
 }) => {
+  const fuelIcon = useMemo(() => {
+    switch (fuelType) {
+      case 'eletric':
+        return 'lightning-bolt-outline';
+        break;
+      case 'gasoline':
+        return 'water-outline';
+        break;
+
+      default:
+        return 'water-outline';
+        break;
+    }
+  }, [fuelType]);
+
   return (
     <Container>
       <Top>
@@ -45,11 +62,11 @@ const BigCarCard: React.FC<bigCarCardProps> = ({
           <Price>R$ {price}</Price>
         </PriceContainer>
       </Top>
-      <Mid>
+      <Mid onPress={onPress}>
         <CarImage source={images} />
       </Mid>
       <Bottom>
-        <FuelIcon name="lightning-bolt-outline" color="#AEAEB3" />
+        <FuelIcon name={fuelIcon} color="#AEAEB3" />
         <PageDots source={Dots} />
       </Bottom>
     </Container>

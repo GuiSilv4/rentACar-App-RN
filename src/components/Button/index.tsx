@@ -8,8 +8,13 @@ interface ButtonProps extends RectButtonProperties {
   opacity?: number;
 }
 
-const Button: React.FC<ButtonProps> = ({ opacity, children, ...rest }) => (
-  <Container {...rest} style={{ opacity }}>
+const Button: React.FC<ButtonProps> = ({
+  opacity,
+  children,
+  style,
+  ...rest
+}) => (
+  <Container {...rest} style={[style, { opacity }]}>
     <ButtonText>{children}</ButtonText>
   </Container>
 );

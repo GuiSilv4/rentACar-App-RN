@@ -4,7 +4,7 @@ import { StatusBar, StyleSheet } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Fontisto';
 
-import { useNavigation } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 
 import {
   Container,
@@ -19,11 +19,20 @@ import {
 
 import BackgroundLogo from '../../assets/background_logo.png';
 
-const RegisterConfirmation: React.FC = () => {
-  const navigation = useNavigation();
+interface confirmationScreenProps {
+  title: string;
+  subtitle: string;
+  okFunction?(): void;
+}
+
+const ConfirmationScreen: React.FC = () => {
+  const route = useRoute();
+  const params = route.params as confirmationScreenProps;
   const handleWelcomeScreen = useCallback(() => {
-    navigation.navigate('WelcomeScreen');
-  }, [navigation]);
+    if (params.okFunction) {
+      params.okFunction();
+    }
+  }, [params]);
 
   return (
     <Container>
@@ -38,8 +47,8 @@ const RegisterConfirmation: React.FC = () => {
       </CheckBox>
 
       <TitleBox>
-        <Title>Conta Criada</Title>
-        <SubTitle>Agora é só fazer login e aproveitar.</SubTitle>
+        <Title>{params.title}</Title>
+        <SubTitle>{params.subtitle}</SubTitle>
       </TitleBox>
 
       <OkButton onPress={handleWelcomeScreen}>
@@ -49,4 +58,4 @@ const RegisterConfirmation: React.FC = () => {
   );
 };
 
-export default RegisterConfirmation;
+export default ConfirmationScreen;
