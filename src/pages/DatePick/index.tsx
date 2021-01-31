@@ -3,16 +3,14 @@ import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { addDays, format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 
-import { StatusBar, Platform, Animated, Dimensions } from 'react-native';
+import { StatusBar, Platform, Animated, Dimensions, Modal } from 'react-native';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 
 import { useNavigation } from '@react-navigation/native';
-import { Image } from 'react-native';
 import Button from '../../components/Button';
 import BigCarCard from '../../components/BigCarCard';
+import FilterModal from '../../components/FilterModal';
 import { useAuth } from '../../hooks/auth';
-
-import Lambo from '../../assets/Lambo.png';
 
 import {
   Container,
@@ -100,6 +98,11 @@ interface Car {
   fuelType: string;
 }
 
+interface FilterModalDTO {
+  low: number;
+  high: number;
+}
+
 const { height } = Dimensions.get('window');
 
 const DatePick: React.FC = () => {
@@ -109,16 +112,19 @@ const DatePick: React.FC = () => {
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [confirmButtonOpacity, setConfirmButtonOpacity] = useState(0.5);
+  const [showFilter, setShowFilters] = useState(false);
+  const [filteredDataSource, setFilteredDataSource] = useState<Car[]>([]);
+
+  const { toggleShowTabBar } = useAuth();
 
   const [cars, setCars] = useState<Car[]>([]);
 
   useEffect(() => {
     api.get('cars').then(response => {
       setCars(response.data);
+      setFilteredDataSource(response.data);
     });
   }, []);
-
-  const { toggleShowTabBar, showTabBar } = useAuth();
 
   const [topContainerY] = useState(new Animated.Value(0));
   const [calendarOpacity] = useState(new Animated.Value(1));
@@ -235,7 +241,6 @@ const DatePick: React.FC = () => {
         },
       };
     }
-    // console.log(dates);
     return dates;
   }, [startDate, endDate]);
 
@@ -274,9 +279,30 @@ const DatePick: React.FC = () => {
     [navigation, startDate, endDate],
   );
 
-  const handleFilter = useCallback(() => {
-    // Todo
-  }, []);
+  const toggleFilter = useCallback(() => {
+    setShowFilters(!showFilter);
+  }, [showFilter]);
+
+  const [min, max] = useMemo(() => {
+    const prices = cars.map(car => car.rentPrice);
+    if (prices.length === 0) {
+      prices.push(0);
+      prices.push(100);
+    }
+    prices.sort();
+    return [prices[0], prices[prices.length - 1]];
+  }, [cars]);
+
+  const applyFilter = useCallback(
+    ({ high, low }: FilterModalDTO) => {
+      const newArray = cars.filter(
+        car => low <= car.rentPrice && car.rentPrice <= high,
+      );
+      setFilteredDataSource(newArray);
+    },
+    [cars],
+  );
+
   return (
     <Container>
       <StatusBar barStyle="light-content" backgroundColor="#1b1b1f" />
@@ -323,19 +349,22 @@ const DatePick: React.FC = () => {
           zIndex: titleOpened ? -20 : 10,
         }}
       >
+        <CarListHeader>
+          <CarListTitle>
+            Resultado{filteredDataSource.length > 1 && 's'}
+          </CarListTitle>
+          <CarListRight>
+            <CarsListResults>
+              {filteredDataSource.length} carro
+              {filteredDataSource.length > 1 && 's'}
+            </CarsListResults>
+            <FilterIconButton onPress={toggleFilter}>
+              <FilterIcon name="ios-options-outline" />
+            </FilterIconButton>
+          </CarListRight>
+        </CarListHeader>
         <CarsContainerScrollView showsVerticalScrollIndicator={false}>
-          <CarListHeader>
-            <CarListTitle>Resultado{cars.length > 1 && 's'}</CarListTitle>
-            <CarListRight>
-              <CarsListResults>
-                {cars.length} carro{cars.length > 1 && 's'}
-              </CarsListResults>
-              <FilterIconButton onPress={handleFilter}>
-                <FilterIcon name="ios-options-outline" />
-              </FilterIconButton>
-            </CarListRight>
-          </CarListHeader>
-          {cars.map(car => (
+          {filteredDataSource.map(car => (
             <BigCarCard
               key={car.id}
               brand={car.brand}
@@ -384,6 +413,13 @@ const DatePick: React.FC = () => {
           </Button>
         </BottonPageContainer>
       </CalendarContainer>
+      <FilterModal
+        closeModal={toggleFilter}
+        visible={showFilter}
+        onChangeValue={applyFilter}
+        minPrice={min}
+        maxPrice={max}
+      />
     </Container>
   );
 };

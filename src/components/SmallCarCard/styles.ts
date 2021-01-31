@@ -60,7 +60,10 @@ export const Price = styled.Text`
   color: #dc1637;
 `;
 
-export const CarImage = styled.Image``;
+export const CarImage = styled.Image`
+  width: 180px;
+  height: 85px;
+`;
 
 export const LeftContainer = styled.View``;
 

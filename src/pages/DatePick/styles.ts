@@ -92,7 +92,7 @@ export const CarsContainer = styled(Animated.View)`
 
 export const CarsContainerScrollView = styled.ScrollView`
   width: ${width}px;
-  padding: 25px;
+  padding: 0 25px 25px 25px;
 `;
 
 export const BottonPageContainer = styled.View`
@@ -164,8 +164,8 @@ export const ArrowLine = styled.View`
 export const CarListHeader = styled.View`
   flex-direction: row;
   align-items: center;
-  margin-bottom: 25px;
   justify-content: space-between;
+  padding: 25px;
 `;
 
 export const CarListRight = styled.View`

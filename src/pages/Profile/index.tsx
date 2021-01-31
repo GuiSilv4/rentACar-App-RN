@@ -2,9 +2,6 @@ import React, { useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 import ProfileFoto from '../../assets/Foto.png';
-import LancerImage from '../../assets/Lancer.png';
-
-import { useAuth } from '../../hooks/auth';
 
 import SmallCarCard from '../../components/SmallCarCard';
 
@@ -71,7 +68,7 @@ const Profile: React.FC = () => {
           model="Lancer Evo X"
           price={290}
           fuelType="gasoline"
-          image={LancerImage}
+          image="https://i.ibb.co/vhqbxz4/Lancer.png"
         />
       </Body>
     </Container>

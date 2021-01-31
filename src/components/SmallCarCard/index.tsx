@@ -23,7 +23,7 @@ interface smallCarCardProps {
   brand: string;
   model: string;
   price: number;
-  image: any;
+  image: string;
   fuelType: string;
   period?: Date[];
 }
@@ -87,7 +87,7 @@ const SmallCarCard: React.FC<smallCarCardProps> = ({
             <FuelTypeIcon name={fuelIcon} />
           </LeftBottomContainer>
         </LeftContainer>
-        <CarImage source={image} />
+        <CarImage source={{ uri: image }} />
       </Container>
       {period?.length === 2 && (
         <PeriodContainer onGoing={ongoingStyle}>
