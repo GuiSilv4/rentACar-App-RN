@@ -96,11 +96,14 @@ interface Car {
   // eslint-disable-next-line camelcase
   image_url: string;
   fuelType: string;
+  transmission: string;
 }
 
 interface FilterModalDTO {
   low: number;
   high: number;
+  fuelType: string;
+  transmission: string;
 }
 
 const { height } = Dimensions.get('window');
@@ -294,10 +297,21 @@ const DatePick: React.FC = () => {
   }, [cars]);
 
   const applyFilter = useCallback(
-    ({ high, low }: FilterModalDTO) => {
-      const newArray = cars.filter(
-        car => low <= car.rentPrice && car.rentPrice <= high,
-      );
+    ({ high, low, fuelType, transmission }: FilterModalDTO) => {
+      console.log(fuelType);
+      const newArray = cars.filter(car => {
+        let response = true;
+        if (low > car.rentPrice || car.rentPrice > high) {
+          response = false;
+        }
+        if (fuelType !== '' && fuelType !== car.fuelType) {
+          response = false;
+        }
+        if (transmission !== '' && transmission !== car.transmission) {
+          response = false;
+        }
+        return response;
+      });
       setFilteredDataSource(newArray);
     },
     [cars],

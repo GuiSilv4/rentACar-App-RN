@@ -99,12 +99,6 @@ export const PriceLabel = styled.Text`
   color: #dc1637;
 `;
 
-export const ButtonsBox = styled.View`
-  background: #f4f5f6;
-  width: 100%;
-  height: 30px;
-`;
-
 export const Thumb = styled.View`
   width: 35px;
   height: 25px;
@@ -134,4 +128,12 @@ export const ThumbLine = styled.View`
   height: 8px;
   width: 2px;
   background-color: #ebebf0;
+`;
+
+export const ScrollVertical = styled.ScrollView`
+  flex: 1;
+`;
+
+export const ScrollableView = styled.View`
+  height: 67%;
 `;

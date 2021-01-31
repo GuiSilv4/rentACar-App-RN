@@ -1,10 +1,11 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { Animated } from 'react-native';
 import RangeSlider from 'rn-range-slider';
 
 import { PanGestureHandler, State } from 'react-native-gesture-handler';
 import Button from '../Button';
+import Selectors from '../Selectors';
 
 import {
   BackgroundView,
@@ -21,16 +22,19 @@ import {
   SubTitleLine,
   SubTitle,
   PriceLabel,
-  ButtonsBox,
   Thumb,
   Rail,
   RailSelected,
   ThumbLine,
+  ScrollVertical,
+  ScrollableView,
 } from './styles';
 
 interface FilterModalDTO {
   low: number;
   high: number;
+  fuelType: string;
+  transmission: string;
 }
 
 interface FilterModalProps {
@@ -51,6 +55,8 @@ const FilterModal: React.FC<FilterModalProps> = ({
   const [containerY] = useState(new Animated.Value(500));
   const [low, setLow] = useState(0);
   const [high, setHigh] = useState(120);
+  const [fuelFilter, setFuelFilter] = useState('');
+  const [transmissionFilter, setTransmissionFilter] = useState('');
 
   useEffect(() => {
     setLow(minPrice);
@@ -125,9 +131,11 @@ const FilterModal: React.FC<FilterModalProps> = ({
     onChangeValue({
       low,
       high,
+      fuelType: fuelFilter,
+      transmission: transmissionFilter,
     });
     closeModal();
-  }, [low, high, closeModal, onChangeValue]);
+  }, [low, high, closeModal, onChangeValue, fuelFilter, transmissionFilter]);
 
   const handleBackScreen = useCallback(() => {
     closeModal();
@@ -136,6 +144,8 @@ const FilterModal: React.FC<FilterModalProps> = ({
   const handleCleanFilter = useCallback(() => {
     setLow(minPrice);
     setHigh(maxPrice);
+    setFuelFilter('');
+    setTransmissionFilter('');
   }, [minPrice, maxPrice]);
 
   return (
@@ -160,37 +170,51 @@ const FilterModal: React.FC<FilterModalProps> = ({
               <CleanLabel>Limpar todos</CleanLabel>
             </CleanButton>
           </Header>
-          <SubTitleLine>
-            <SubTitle>Preço ao dia</SubTitle>
-            <PriceLabel>
-              R$ {low} - R$ {high}
-            </PriceLabel>
-          </SubTitleLine>
-          <RangeSlider
-            min={minPrice}
-            max={maxPrice}
-            low={low}
-            high={high}
-            step={1}
-            renderThumb={renderThumb}
-            renderRail={renderRail}
-            renderRailSelected={renderRailSelected}
-            onValueChanged={handleValueChange}
-          />
-          <SubTitleLine>
-            <SubTitle>Combustível</SubTitle>
-          </SubTitleLine>
-          <ButtonsBox />
-          <SubTitleLine>
-            <SubTitle>Transmissão</SubTitle>
-          </SubTitleLine>
-          <ButtonsBox />
-          <Button
-            style={{ position: 'absolute', alignSelf: 'center', bottom: 100 }}
-            onPress={handleApplyFilters}
-          >
-            Confirmar
-          </Button>
+          <ScrollableView>
+            <ScrollVertical>
+              <SubTitleLine>
+                <SubTitle>Preço ao dia</SubTitle>
+                <PriceLabel>
+                  R$ {low} - R$ {high}
+                </PriceLabel>
+              </SubTitleLine>
+              <RangeSlider
+                min={minPrice}
+                max={maxPrice}
+                low={low}
+                high={high}
+                step={1}
+                renderThumb={renderThumb}
+                renderRail={renderRail}
+                renderRailSelected={renderRailSelected}
+                onValueChanged={handleValueChange}
+              />
+              <SubTitleLine>
+                <SubTitle>Combustível</SubTitle>
+              </SubTitleLine>
+              <Selectors
+                buttons={[
+                  { name: 'gasoline', label: 'Gasolina', icon: 'gasoline' },
+                  { name: 'eletric', label: 'Elétrico', icon: 'eletric' },
+                  { name: 'diesel', label: 'Diesel', icon: 'diesel' },
+                ]}
+                value={fuelFilter}
+                onChange={newValue => setFuelFilter(newValue)}
+              />
+              <SubTitleLine>
+                <SubTitle>Transmissão</SubTitle>
+              </SubTitleLine>
+              <Selectors
+                buttons={[
+                  { name: 'auto', label: 'Automático' },
+                  { name: 'manual', label: 'Manual' },
+                ]}
+                value={transmissionFilter}
+                onChange={newValue => setTransmissionFilter(newValue)}
+              />
+            </ScrollVertical>
+          </ScrollableView>
+          <Button onPress={handleApplyFilters}>Confirmar</Button>
         </FilterContainer>
       </Container>
     </Modal>
