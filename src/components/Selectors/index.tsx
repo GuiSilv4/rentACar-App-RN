@@ -22,22 +22,24 @@ interface SelectorsProps {
 }
 
 const Selectors: React.FC<SelectorsProps> = ({ buttons, value, onChange }) => {
-  const [buttonSelected, setButtonSelected] = useState(value);
-
-  const handleSelection = useCallback(
-    (label: string) => {
-      if (label !== buttonSelected) {
-        setButtonSelected(label);
-      } else {
-        setButtonSelected('');
-      }
-    },
-    [buttonSelected],
-  );
+  const [buttonSelected, setButtonSelected] = useState('');
 
   useEffect(() => {
-    onChange(buttonSelected);
-  }, [buttonSelected, onChange]);
+    setButtonSelected(value);
+  }, [value]);
+
+  const handleSelection = useCallback(
+    (name: string) => {
+      if (name !== buttonSelected) {
+        setButtonSelected(name);
+        onChange(name);
+      } else {
+        setButtonSelected('');
+        onChange('');
+      }
+    },
+    [buttonSelected, onChange],
+  );
 
   const Button: React.FC<ButtonsInterface> = ({ label, icon, size, name }) => {
     const fuelIcon = (iconName: string): string => {

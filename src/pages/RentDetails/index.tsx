@@ -3,6 +3,8 @@ import { useRoute } from '@react-navigation/native';
 
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
+import 'intl';
+import 'intl/locale-data/jsonp/en'; // or any other locale you need
 
 import { useNavigation } from '@react-navigation/native';
 import { differenceInCalendarDays } from 'date-fns';

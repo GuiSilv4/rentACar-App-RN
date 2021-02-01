@@ -149,7 +149,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
   }, [minPrice, maxPrice]);
 
   return (
-    <Modal transparent visible={visible} onShow={handleOnShow}>
+    <Modal visible={visible} onShow={handleOnShow}>
       <BackBackgroundPressable onPress={handleBackScreen}>
         <BackgroundView />
       </BackBackgroundPressable>

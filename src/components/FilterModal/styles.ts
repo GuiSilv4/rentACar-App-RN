@@ -2,7 +2,9 @@ import styled from 'styled-components/native';
 
 import { Animated } from 'react-native';
 
-export const Modal = styled.Modal`
+export const Modal = styled.Modal.attrs({
+  transparent: true,
+})`
   flex: 1;
   justify-content: flex-end;
 `;
@@ -130,7 +132,9 @@ export const ThumbLine = styled.View`
   background-color: #ebebf0;
 `;
 
-export const ScrollVertical = styled.ScrollView`
+export const ScrollVertical = styled.ScrollView.attrs({
+  showsVerticalScrollIndicator: false,
+})`
   flex: 1;
 `;
 

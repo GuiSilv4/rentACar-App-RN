@@ -34,6 +34,7 @@ import {
   FilterIcon,
   CarListRight,
   FilterIconButton,
+  FromToPressable,
 } from './styles';
 import api from '../../services/api';
 
@@ -110,17 +111,14 @@ const { height } = Dimensions.get('window');
 
 const DatePick: React.FC = () => {
   const navigation = useNavigation();
-
   const [titleOpened, setTitleOpened] = useState(true);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [confirmButtonOpacity, setConfirmButtonOpacity] = useState(0.5);
   const [showFilter, setShowFilters] = useState(false);
   const [filteredDataSource, setFilteredDataSource] = useState<Car[]>([]);
-
-  const { toggleShowTabBar } = useAuth();
-
   const [cars, setCars] = useState<Car[]>([]);
+  const { toggleShowTabBar } = useAuth();
 
   useEffect(() => {
     api.get('cars').then(response => {
@@ -298,7 +296,6 @@ const DatePick: React.FC = () => {
 
   const applyFilter = useCallback(
     ({ high, low, fuelType, transmission }: FilterModalDTO) => {
-      console.log(fuelType);
       const newArray = cars.filter(car => {
         let response = true;
         if (low > car.rentPrice || car.rentPrice > high) {
@@ -326,37 +323,39 @@ const DatePick: React.FC = () => {
           data e encontre um carro.
         </Title>
       </TopPageContainer>
-      <FromToContainer
-        show={titleOpened}
-        style={{ transform: [{ translateY: topContainerY }] }}
-      >
-        <FromContainer>
-          <FromToLabel>DE</FromToLabel>
-          <FromToInput
-            value={formatedStartDate}
-            picked={!formatedStartDate}
-            editable={false}
-          />
-        </FromContainer>
-        <ArrowContainer onPress={handleOpenCalendar}>
-          {titleOpened && <ArrowLine />}
+      <FromToPressable onPress={handleOpenCalendar}>
+        <FromToContainer
+          show={titleOpened}
+          style={{ transform: [{ translateY: topContainerY }] }}
+        >
+          <FromContainer>
+            <FromToLabel>DE</FromToLabel>
+            <FromToInput
+              value={formatedStartDate}
+              picked={!formatedStartDate}
+              editable={false}
+            />
+          </FromContainer>
+          <ArrowContainer>
+            {titleOpened && <ArrowLine />}
 
-          <ArrowIcon
-            name="chevron-right"
-            color="#7A7A80"
-            size={22}
-            rotate={!titleOpened}
-          />
-        </ArrowContainer>
-        <ToContainer>
-          <FromToLabel>ATÉ</FromToLabel>
-          <FromToInput
-            value={formatedEndDate}
-            picked={!formatedEndDate}
-            editable={false}
-          />
-        </ToContainer>
-      </FromToContainer>
+            <ArrowIcon
+              name="chevron-right"
+              color="#7A7A80"
+              size={22}
+              rotate={!titleOpened}
+            />
+          </ArrowContainer>
+          <ToContainer>
+            <FromToLabel>ATÉ</FromToLabel>
+            <FromToInput
+              value={formatedEndDate}
+              picked={!formatedEndDate}
+              editable={false}
+            />
+          </ToContainer>
+        </FromToContainer>
+      </FromToPressable>
       <CarsContainer
         style={{
           opacity: carContainerOpacity,

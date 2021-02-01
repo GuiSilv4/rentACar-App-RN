@@ -69,6 +69,8 @@ export const FromToContainer = styled(Animated.View)<fromToBarProps>`
     `}
 `;
 
+export const FromToPressable = styled.TouchableWithoutFeedback``;
+
 export const CalendarContainer = styled(Animated.View)`
   flex: 1;
   position: absolute;
@@ -104,20 +106,20 @@ export const BottonPageContainer = styled.View`
 `;
 
 export const FromContainer = styled.View`
-  width: 33%;
+  width: 36%;
   border-width: 0px;
   border-color: #fff;
   justify-content: center;
 `;
 
 export const ToContainer = styled.View`
-  width: 33%;
+  width: 36%;
   justify-content: center;
 `;
 
-export const ArrowContainer = styled.TouchableOpacity`
+export const ArrowContainer = styled.View`
   flex-direction: row;
-  width: 33%;
+  width: 28%;
   justify-content: center;
   align-items: center;
 `;
